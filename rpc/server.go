@@ -118,7 +118,7 @@ func (s *Server) serveSingleRequest(ctx context.Context, codec ServerCodec) {
 		}
 		return
 	}
-	fmt.Println("IGORM: RPC server received batch", reqs)
+	fmt.Println("ISSUE_4543: RPC server received batch", reqs)
 	if batch {
 		h.handleBatch(reqs)
 	} else {
@@ -130,7 +130,7 @@ func (s *Server) serveSingleRequest(ctx context.Context, codec ServerCodec) {
 // requests to finish, then closes all codecs which will cancel pending requests and
 // subscriptions.
 func (s *Server) Stop() {
-	fmt.Println("IGORM: RPC server stopping")
+	fmt.Println("ISSUE_4543: RPC server stopping")
 	if atomic.CompareAndSwapInt32(&s.run, 1, 0) {
 		log.Info("RPC server shutting down")
 		s.codecs.Each(func(c interface{}) bool {
