@@ -497,7 +497,6 @@ func New(stack *node.Node, config *ethconfig.Config, logger log.Logger) (*Ethere
 			backend.txPool2, backend.newTxs2, backend.txPool2Send, newTxsBroadcaster,
 			func() {
 				select {
-				case backend.notifyMiningAboutNewTxs <- struct{}{}:
 				default:
 				}
 			})
@@ -745,8 +744,6 @@ func (s *Ethereum) StartMining(ctx context.Context, db kv.RwDB, mining *stagedsy
 		for {
 			mineEvery.Reset(3 * time.Second)
 			select {
-			case <-s.notifyMiningAboutNewTxs:
-				hasWork = false
 			case <-mineEvery.C:
 				hasWork = true
 			case err := <-errc:
